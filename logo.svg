@@ -1,0 +1,11 @@
+<svg viewBox="0 0 1340 480" xmlns="http://www.w3.org/2000/svg">
+  <!-- NC Logo -->
+  <path d="M 45 260 L 115 260 L 200 350 L 200 260 L 295 260 L 295 430 L 225 430 L 140 340 L 140 430 L 45 430 Z" fill="#6b1f37"/>
+  
+  <!-- Vertical divider -->
+  <line x1="610" y1="230" x2="610" y2="430" stroke="#6b1f37" stroke-width="12"/>
+  
+  <!-- Norco College Engineering Text -->
+  <text x="700" y="360" font-family="Georgia, serif" font-size="72" font-weight="300" fill="#6b1f37" letter-spacing="2">Norco College</text>
+  <text x="700" y="430" font-family="Georgia, serif" font-size="72" font-weight="300" fill="#6b1f37" letter-spacing="2">Engineering</text>
+</svg>
