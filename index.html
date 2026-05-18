@@ -47,6 +47,26 @@
       --text-tertiary:#8a8a8a;
     }
 
+    /* ── Logo Header ──────────────────────────────────────── */
+    .logo-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .logo-container {
+      flex-shrink: 0;
+      width: 180px;
+      height: auto;
+    }
+    .logo-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
     /* ── Header ───────────────────────────────────────────── */
     .page-header { margin-bottom: 1.5rem; }
     .college-label { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--claret); margin-bottom: 4px; }
@@ -178,10 +198,13 @@
       .sem-grid { grid-template-columns: repeat(2,1fr); }
       .stats    { grid-template-columns: repeat(2,1fr); }
       .detail-grid { grid-template-columns: 1fr 1fr; }
+      .logo-header { flex-direction: column; align-items: flex-start; }
+      .logo-container { width: 140px; }
     }
     @media (max-width: 480px) {
       .sem-grid { grid-template-columns: 1fr; }
       .stats    { grid-template-columns: 1fr 1fr; }
+      .logo-container { width: 120px; }
     }
   </style>
 </head>
@@ -488,15 +511,20 @@ function render() {
   const root = document.getElementById("root");
   root.innerHTML = "";
 
-  // ── Program header ─────────────────────────────────────
+  // ── Logo Header ────────────────────────────────────────
   root.insertAdjacentHTML("beforeend", `
-    <div class="page-header">
-      <div class="college-label">Norco College &middot; Pathway Map</div>
-      <h1 class="program-title">${PROGRAM.name}</h1>
-      <p class="program-degree">${PROGRAM.degree} &nbsp;&middot;&nbsp; ${PROGRAM.totalUnits} units</p>
-      <p class="program-desc">${PROGRAM.description}</p>
-      <div class="outcome-tags">
-        ${PROGRAM.outcomes.map(o=>`<span class="outcome-tag">${o}</span>`).join("")}
+    <div class="logo-header">
+      <div class="logo-container">
+        <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTM0MCAxMjAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxzdHlsZT4uIGZpbGwtY2xhcmV0IHsgZmlsbDogIzZiMWYzNzsgfTwvc3R5bGU+PC9kZWZzPjwhLS0gTkMgTG9nbyBFbGVtZW50IC0tPjxnIGNsYXNzPSJmaWxsLWNsYXJldCI+PHBhdGggZD0iTSA0NSAyNjAgTCAxMTUgMjYwIEwgMjAwIDM1MCBMMjAwIDI2MCBMMjk1IDI2MCBMMjk1IDQzMCBMMjI1IDQzMCBMMTQwIDM0MCBMMTQwIDQzMCBMNDUgNDMwIFoiLz48L2c+PC9zdmc+" alt="Norco College Logo">
+      </div>
+      <div class="page-header">
+        <div class="college-label">Norco College &middot; Pathway Map</div>
+        <h1 class="program-title">${PROGRAM.name}</h1>
+        <p class="program-degree">${PROGRAM.degree} &nbsp;&middot;&nbsp; ${PROGRAM.totalUnits} units</p>
+        <p class="program-desc">${PROGRAM.description}</p>
+        <div class="outcome-tags">
+          ${PROGRAM.outcomes.map(o=>`<span class="outcome-tag">${o}</span>`).join("")}
+        </div>
       </div>
     </div>`);
 
