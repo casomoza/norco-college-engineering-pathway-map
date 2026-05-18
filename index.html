@@ -9,39 +9,59 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f9fafb;
-      color: #111827;
+      background: #faf9f7;
+      color: #2a2a2a;
       min-height: 100vh;
       padding: 2rem 1rem;
     }
     .page { max-width: 1100px; margin: 0 auto; }
 
-    /* ── Colors ───────────────────────────────────────────── */
+    /* ── Colors (Norco College Brand) ──────────────────────── */
     :root {
+      /* Signature Colors */
+      --claret:       #6b1f37;
+      --burgundy:     #5c2d47;
+      --mahogany:     #3d302d;
+      
+      /* Supporting Colors */
+      --palomino:     #f7ad20;
+      --champagne:    #c9a966;
+      --rust:         #8b5a38;
+      --manzanita:    #6b3d2b;
+      --buckskin:     #a39e88;
+      --sage:         #6b8675;
+      --thistle:      #6b5d6e;
+      --wood-grain:   #7a6b5a;
+      --agave:        #5d7b86;
+      --slate:        #3a4d54;
+      --elderberry:   #1a1a1a;
+      --del-mar:      #0c1e35;
+      
+      /* UI Colors */
       --bg-primary:   #ffffff;
-      --bg-secondary: #f3f4f6;
-      --border:       #e5e7eb;
-      --border-strong:#d1d5db;
-      --text-primary: #111827;
-      --text-secondary:#6b7280;
-      --text-tertiary:#9ca3af;
+      --bg-secondary: #f5f3f1;
+      --border:       #e8ddd6;
+      --border-strong:#d4ccc0;
+      --text-primary: #2a2a2a;
+      --text-secondary:#5d5d5d;
+      --text-tertiary:#8a8a8a;
     }
 
     /* ── Header ───────────────────────────────────────────── */
     .page-header { margin-bottom: 1.5rem; }
-    .college-label { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 4px; }
-    .program-title { font-size: 24px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+    .college-label { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--claret); margin-bottom: 4px; }
+    .program-title { font-size: 24px; font-weight: 700; color: var(--claret); margin-bottom: 4px; }
     .program-degree { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
     .program-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 12px; max-width: 780px; }
     .outcome-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-    .outcome-tag { font-size: 12px; padding: 3px 11px; background: var(--bg-secondary); color: var(--text-secondary); border-radius: 20px; border: 0.5px solid var(--border); }
+    .outcome-tag { font-size: 12px; padding: 3px 11px; background: var(--bg-secondary); color: var(--burgundy); border-radius: 20px; border: 0.5px solid var(--burgundy); }
 
     /* ── Stats row ────────────────────────────────────────── */
     .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.25rem; }
     .stat-box { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: 10px; padding: 10px 12px; }
     .stat-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
     .stat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
-    .stat-value { font-size: 22px; font-weight: 600; color: var(--text-primary); }
+    .stat-value { font-size: 22px; font-weight: 600; color: var(--claret); }
     .stat-sub { font-size: 11px; font-weight: 400; color: var(--text-tertiary); }
 
     /* ── Legend ───────────────────────────────────────────── */
@@ -61,7 +81,7 @@
     }
     .chip:hover { background: var(--bg-secondary); }
     .chip .cdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .chip.active { font-weight: 600; color: var(--text-primary); background: var(--bg-secondary); border-color: #6b7280; }
+    .chip.active { font-weight: 600; color: var(--claret); background: rgba(107, 31, 55, .08); border-color: var(--claret); }
     .chip.clear-btn { border-color: var(--border); color: var(--text-tertiary); }
 
     /* ── Year sections ────────────────────────────────────── */
@@ -83,14 +103,14 @@
     .card.required:hover { background: var(--bg-secondary); }
     .card.required.selected { background: var(--bg-secondary); border-color: #9ca3af !important; }
     .card.required.dimmed { opacity: 0.12; pointer-events: none; }
-    .card.core { border-left-color: #60a5fa; }
-    .card.ge   { border-left-color: #34d399; }
+    .card.core { border-left-color: var(--claret); }
+    .card.ge   { border-left-color: var(--sage); }
 
-    .card.conditional { border: 1.5px dashed #f59e0b; background: rgba(251,191,36,.04); }
-    .card.conditional:hover { background: rgba(251,191,36,.1); }
-    .card.conditional.selected { background: rgba(251,191,36,.13); }
+    .card.conditional { border: 1.5px dashed var(--palomino); background: rgba(247, 173, 32, .04); }
+    .card.conditional:hover { background: rgba(247, 173, 32, .1); }
+    .card.conditional.selected { background: rgba(247, 173, 32, .13); }
 
-    .card.optional-card { border: 1.5px dashed #d1d5db; background: transparent; }
+    .card.optional-card { border: 1.5px dashed var(--border-strong); background: transparent; }
     .card.optional-card:hover { background: var(--bg-secondary); }
     .card.optional-card.selected { background: var(--bg-secondary); }
 
@@ -106,8 +126,8 @@
       padding: 2px 7px; border-radius: 4px;
       display: inline-flex; align-items: center; gap: 3px; margin-bottom: 5px;
     }
-    .pill-cond { background: rgba(251,191,36,.15); color: #92400e; border: 0.5px solid rgba(251,191,36,.4); }
-    .pill-opt  { background: #f3f4f6; color: #6b7280; border: 0.5px solid #d1d5db; }
+    .pill-cond { background: rgba(247, 173, 32, .15); color: #78350f; border: 0.5px solid rgba(247, 173, 32, .4); }
+    .pill-opt  { background: var(--bg-secondary); color: var(--text-secondary); border: 0.5px solid var(--border-strong); }
 
     /* ── Detail panel ─────────────────────────────────────── */
     .detail-panel {
@@ -120,7 +140,7 @@
     }
     .detail-close:hover { color: var(--text-primary); }
     .detail-meta { font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--text-tertiary); margin-bottom: 4px; }
-    .detail-title { font-size: 19px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+    .detail-title { font-size: 19px; font-weight: 700; color: var(--claret); margin-bottom: 12px; }
     .detail-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px; }
     .detail-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; border-top: 0.5px solid var(--border); padding-top: 14px; margin-bottom: 14px; }
     .detail-field label { font-size: 10.5px; color: var(--text-tertiary); display: block; margin-bottom: 3px; }
@@ -131,8 +151,8 @@
     .req-badge { font-size: 11px; padding: 3px 10px; border-radius: 5px; border: 0.5px solid; display: inline-block; }
     .callout { border-radius: 8px; padding: 11px 13px; font-size: 12.5px; line-height: 1.65; margin-top: 12px; }
     .callout strong { display: block; margin-bottom: 3px; font-size: 13px; }
-    .callout-amber { background: rgba(251,191,36,.1); border: 0.5px solid rgba(251,191,36,.45); color: #78350f; }
-    .callout-gray  { background: #f9fafb; border: 0.5px solid #e5e7eb; color: #4b5563; }
+    .callout-amber { background: rgba(247, 173, 32, .1); border: 0.5px solid rgba(247, 173, 32, .45); color: #78350f; }
+    .callout-gray  { background: var(--bg-secondary); border: 0.5px solid var(--border); color: var(--text-secondary); }
 
     /* ── Dot key footer ───────────────────────────────────── */
     .dot-key {
@@ -173,11 +193,12 @@ const PROGRAM = {
 };
 
 // Requirement categories shown as colored dots / filter chips
+// Using Norco College official color palette
 const REQS = {
-  tag:      { label: "UCR TAG",              dot: "#a78bfa", bg: "rgba(139,92,246,.1)",  text: "#6d28d9", border: "rgba(139,92,246,.4)" },
-  as:       { label: "A.S. Pre-Engineering", dot: "#60a5fa", bg: "rgba(96,165,250,.1)",  text: "#1d4ed8", border: "rgba(96,165,250,.4)"  },
-  pathways: { label: "UC Pathways+",         dot: "#34d399", bg: "rgba(52,211,153,.1)",  text: "#065f46", border: "rgba(52,211,153,.4)"  },
-  uc7:      { label: "UC 7-Course",          dot: "#fbbf24", bg: "rgba(251,191,36,.1)",  text: "#92400e", border: "rgba(251,191,36,.4)"  },
+  tag:      { label: "UCR TAG",              dot: "#6b1f37", bg: "rgba(107,31,55,.1)",    text: "#6b1f37", border: "rgba(107,31,55,.4)" },
+  as:       { label: "A.S. Pre-Engineering", dot: "#5d7b86", bg: "rgba(93,123,134,.1)",   text: "#3a4d54", border: "rgba(93,123,134,.4)"  },
+  pathways: { label: "UC Pathways+",         dot: "#6b8675", bg: "rgba(107,134,117,.1)",  text: "#3d5a45", border: "rgba(107,134,117,.4)"  },
+  uc7:      { label: "UC 7-Course",          dot: "#f7ad20", bg: "rgba(247,173,32,.1)",   text: "#8b5a38", border: "rgba(247,173,32,.4)"  },
 };
 
 // Semesters in order — { id, label, year }
@@ -326,10 +347,10 @@ function render() {
   const legendEl = document.createElement("div");
   legendEl.className = "legend";
   legendEl.innerHTML = `
-    <div class="leg-item"><div class="leg-bar" style="background:#60a5fa"></div>Major / Engineering</div>
-    <div class="leg-item"><div class="leg-bar" style="background:#34d399"></div>General Education</div>
-    <div class="leg-item"><div class="leg-dash" style="border:1.5px dashed #f59e0b"></div>Conditional (test-out available)</div>
-    <div class="leg-item"><div class="leg-dash" style="border:1.5px dashed #d1d5db"></div>Optional</div>`;
+    <div class="leg-item"><div class="leg-bar" style="background:#6b1f37"></div>Major / Engineering</div>
+    <div class="leg-item"><div class="leg-bar" style="background:#6b8675"></div>General Education</div>
+    <div class="leg-item"><div class="leg-dash" style="border:1.5px dashed #f7ad20"></div>Conditional (test-out available)</div>
+    <div class="leg-item"><div class="leg-dash" style="border:1.5px dashed #d4ccc0"></div>Optional</div>`;
   root.appendChild(legendEl);
 
   // ── Filters ────────────────────────────────────────────
