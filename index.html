@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pre-Engineering Pathway — Norco College</title>
+  <style>
+    /* ── Reset & base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f9fafb;
+      color: #111827;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+    .page { max-width: 1100px; margin: 0 auto; }
+
+    /* ── Colors ───────────────────────────────────────────── */
+    :root {
+      --bg-primary:   #ffffff;
+      --bg-secondary: #f3f4f6;
+      --border:       #e5e7eb;
+      --border-strong:#d1d5db;
+      --text-primary: #111827;
+      --text-secondary:#6b7280;
+      --text-tertiary:#9ca3af;
+    }
+
+    /* ── Header ───────────────────────────────────────────── */
+    .page-header { margin-bottom: 1.5rem; }
+    .college-label { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 4px; }
+    .program-title { font-size: 24px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+    .program-degree { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
+    .program-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 12px; max-width: 780px; }
+    .outcome-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .outcome-tag { font-size: 12px; padding: 3px 11px; background: var(--bg-secondary); color: var(--text-secondary); border-radius: 20px; border: 0.5px solid var(--border); }
+
+    /* ── Stats row ────────────────────────────────────────── */
+    .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.25rem; }
+    .stat-box { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+    .stat-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
+    .stat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+    .stat-value { font-size: 22px; font-weight: 600; color: var(--text-primary); }
+    .stat-sub { font-size: 11px; font-weight: 400; color: var(--text-tertiary); }
+
+    /* ── Legend ───────────────────────────────────────────── */
+    .legend { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: .85rem; }
+    .leg-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+    .leg-bar { width: 3px; height: 15px; border-radius: 2px; }
+    .leg-dash { width: 14px; height: 14px; border-radius: 3px; }
+
+    /* ── Filter chips ─────────────────────────────────────── */
+    .filter-row { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+    .filter-label { font-size: 12px; color: var(--text-tertiary); }
+    .chip {
+      font-family: inherit; font-size: 12px; padding: 5px 13px; border-radius: 20px;
+      cursor: pointer; border: 0.5px solid var(--border-strong); background: transparent;
+      color: var(--text-secondary); display: flex; align-items: center; gap: 6px;
+      transition: all .12s;
+    }
+    .chip:hover { background: var(--bg-secondary); }
+    .chip .cdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .chip.active { font-weight: 600; color: var(--text-primary); background: var(--bg-secondary); border-color: #6b7280; }
+    .chip.clear-btn { border-color: var(--border); color: var(--text-tertiary); }
+
+    /* ── Year sections ────────────────────────────────────── */
+    .yr-sec { margin-bottom: 1.25rem; }
+    .yr-label { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; padding-left: 2px; }
+    .sem-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+
+    /* ── Semester columns ─────────────────────────────────── */
+    .sem-col { border: 0.5px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--bg-primary); }
+    .sem-hd { background: var(--bg-secondary); padding: 8px 10px; border-bottom: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .sem-hd-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+    .sem-hd-units { font-size: 11px; color: var(--text-tertiary); }
+    .sem-body { padding: 6px; display: flex; flex-direction: column; gap: 5px; }
+
+    /* ── Course cards ─────────────────────────────────────── */
+    .card { border-radius: 7px; padding: 8px 9px; cursor: pointer; transition: background .1s, opacity .15s; }
+
+    .card.required { border: 0.5px solid var(--border); border-left-width: 3px; }
+    .card.required:hover { background: var(--bg-secondary); }
+    .card.required.selected { background: var(--bg-secondary); border-color: #9ca3af !important; }
+    .card.required.dimmed { opacity: 0.12; pointer-events: none; }
+    .card.core { border-left-color: #60a5fa; }
+    .card.ge   { border-left-color: #34d399; }
+
+    .card.conditional { border: 1.5px dashed #f59e0b; background: rgba(251,191,36,.04); }
+    .card.conditional:hover { background: rgba(251,191,36,.1); }
+    .card.conditional.selected { background: rgba(251,191,36,.13); }
+
+    .card.optional-card { border: 1.5px dashed #d1d5db; background: transparent; }
+    .card.optional-card:hover { background: var(--bg-secondary); }
+    .card.optional-card.selected { background: var(--bg-secondary); }
+
+    .c-code  { font-size: 10px; font-weight: 700; letter-spacing: .05em; color: var(--text-tertiary); margin-bottom: 2px; }
+    .c-title { font-size: 12px; font-weight: 500; color: var(--text-primary); line-height: 1.35; margin-bottom: 5px; }
+    .c-bottom{ display: flex; justify-content: space-between; align-items: center; }
+    .c-units { font-size: 11px; color: var(--text-secondary); }
+    .c-dots  { display: flex; gap: 3px; align-items: center; }
+    .c-dot   { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+    .special-pill {
+      font-size: 10px; font-weight: 600; letter-spacing: .03em;
+      padding: 2px 7px; border-radius: 4px;
+      display: inline-flex; align-items: center; gap: 3px; margin-bottom: 5px;
+    }
+    .pill-cond { background: rgba(251,191,36,.15); color: #92400e; border: 0.5px solid rgba(251,191,36,.4); }
+    .pill-opt  { background: #f3f4f6; color: #6b7280; border: 0.5px solid #d1d5db; }
+
+    /* ── Detail panel ─────────────────────────────────────── */
+    .detail-panel {
+      margin-top: 14px; border: 0.5px solid var(--border-strong);
+      border-radius: 12px; padding: 16px 20px; background: var(--bg-primary);
+    }
+    .detail-close {
+      float: right; background: transparent; border: none; cursor: pointer;
+      color: var(--text-tertiary); font-size: 18px; line-height: 1; padding: 2px;
+    }
+    .detail-close:hover { color: var(--text-primary); }
+    .detail-meta { font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--text-tertiary); margin-bottom: 4px; }
+    .detail-title { font-size: 19px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+    .detail-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px; }
+    .detail-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; border-top: 0.5px solid var(--border); padding-top: 14px; margin-bottom: 14px; }
+    .detail-field label { font-size: 10.5px; color: var(--text-tertiary); display: block; margin-bottom: 3px; }
+    .detail-field p { font-size: 13px; color: var(--text-primary); line-height: 1.4; }
+    .detail-field .big { font-size: 17px; font-weight: 600; }
+    .satisfies-label { font-size: 10.5px; color: var(--text-tertiary); margin-bottom: 7px; }
+    .satisfies-badges { display: flex; gap: 7px; flex-wrap: wrap; }
+    .req-badge { font-size: 11px; padding: 3px 10px; border-radius: 5px; border: 0.5px solid; display: inline-block; }
+    .callout { border-radius: 8px; padding: 11px 13px; font-size: 12.5px; line-height: 1.65; margin-top: 12px; }
+    .callout strong { display: block; margin-bottom: 3px; font-size: 13px; }
+    .callout-amber { background: rgba(251,191,36,.1); border: 0.5px solid rgba(251,191,36,.45); color: #78350f; }
+    .callout-gray  { background: #f9fafb; border: 0.5px solid #e5e7eb; color: #4b5563; }
+
+    /* ── Dot key footer ───────────────────────────────────── */
+    .dot-key {
+      display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+      margin-top: 12px; padding: 10px 14px;
+      background: var(--bg-secondary); border-radius: 9px; border: 0.5px solid var(--border);
+    }
+    .dot-key-label { font-size: 11.5px; font-weight: 600; color: var(--text-secondary); }
+    .dot-key-item  { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--text-secondary); }
+    .dot-key-dot   { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+
+    /* ── Responsive ───────────────────────────────────────── */
+    @media (max-width: 800px) {
+      .sem-grid { grid-template-columns: repeat(2,1fr); }
+      .stats    { grid-template-columns: repeat(2,1fr); }
+      .detail-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .sem-grid { grid-template-columns: 1fr; }
+      .stats    { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page" id="root"></div>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   DATA  —  edit this section to update courses / program info
+   ════════════════════════════════════════════════════════════ */
+
+const PROGRAM = {
+  name:        "Mechanical Engineering (UCR)",
+  degree:      "A.S. Pre-Engineering + TAG to UC Riverside + UC Pathways+",
+  totalUnits:  79,
+  description: "Prepares students for transfer to Mechanical Engineering at UC Riverside while completing the A.S. in Pre-Engineering and UC Pathways+ requirements.",
+  outcomes:    ["Transfer to UC Riverside", "Mechanical Engineer", "A.S. in Pre-Engineering"],
+};
+
+// Requirement categories shown as colored dots / filter chips
+const REQS = {
+  tag:      { label: "UCR TAG",              dot: "#a78bfa", bg: "rgba(139,92,246,.1)",  text: "#6d28d9", border: "rgba(139,92,246,.4)" },
+  as:       { label: "A.S. Pre-Engineering", dot: "#60a5fa", bg: "rgba(96,165,250,.1)",  text: "#1d4ed8", border: "rgba(96,165,250,.4)"  },
+  pathways: { label: "UC Pathways+",         dot: "#34d399", bg: "rgba(52,211,153,.1)",  text: "#065f46", border: "rgba(52,211,153,.4)"  },
+  uc7:      { label: "UC 7-Course",          dot: "#fbbf24", bg: "rgba(251,191,36,.1)",  text: "#92400e", border: "rgba(251,191,36,.4)"  },
+};
+
+// Semesters in order — { id, label, year }
+const SEMESTERS = [
+  { id:"su1", label:"Summer", year:1 },
+  { id:"f1",  label:"Fall",   year:1 },
+  { id:"w1",  label:"Winter", year:1 },
+  { id:"sp1", label:"Spring", year:1 },
+  { id:"su2", label:"Summer", year:2 },
+  { id:"f2",  label:"Fall",   year:2 },
+  { id:"w2",  label:"Winter", year:2 },
+  { id:"sp2", label:"Spring", year:2 },
+];
+
+// cat: "core" | "ge" | "conditional" | "optional"
+// satisfies: array of keys from REQS
+const COURSES = [
+  // ── Summer Year 1 ──────────────────────────────────────────────────────
+  { code:"CHE-2A",  title:"Introductory General Chemistry",       units:4, sem:"su1", cat:"conditional",
+    prereq:"None", satisfies:[],
+    desc:"Covers fundamental chemistry concepts including atomic structure, chemical bonding, stoichiometry, gas laws, and basic reactions. Prepares students for General Chemistry I (CHE-1A).",
+    note:"Students who pass the Chemistry Placement Diagnostic Exam may skip CHE-2A and enroll directly in CHE-1A. This course is offered in Summer Year 1 for students who do not pass the diagnostic before the Fall semester." },
+  { code:"ENE-10",  title:"Introduction to Engineering",           units:3, sem:"su1", cat:"optional",
+    prereq:"None", satisfies:[],
+    desc:"An introduction to the engineering profession, engineering disciplines, and the engineering design process. Covers problem-solving methodologies, teamwork, and various fields of engineering practice.",
+    note:"Optional but highly recommended, especially for students with limited prior exposure to engineering. Builds the foundational mindset and skills that support success in later engineering coursework." },
+
+  // ── Fall Year 1 ────────────────────────────────────────────────────────
+  { code:"CHE-1A",      title:"General Chemistry",              units:5, sem:"f1", cat:"core",
+    prereq:"CHE-2A or pass Chemistry Diagnostics Exam", satisfies:["tag","as","pathways"],
+    desc:"An exploration of simple chemical systems: stoichiometry, gas laws, elementary thermodynamics, atomic structure, and bonding. Includes laboratory techniques." },
+  { code:"ENGL-C1000",  title:"Academic Reading and Writing",   units:4, sem:"f1", cat:"ge",
+    prereq:"None", satisfies:["as","uc7"],
+    desc:"Instruction in academic reading and writing, including writing processes, effective use of language, analytical thinking, and foundations of academic research. Minimum 7,500 words of writing." },
+  { code:"MAT-1A",      title:"Calculus I",                     units:4, sem:"f1", cat:"core",
+    prereq:"None", satisfies:["tag","as","uc7","pathways"],
+    desc:"Functions, limits, continuity, techniques and applications of differentiation, the Fundamental Theorem of Calculus, and basic integration." },
+
+  // ── Winter Year 1 ──────────────────────────────────────────────────────
+  { code:"ENGL-1B",  title:"Critical Thinking and Writing", units:4, sem:"w1", cat:"ge",
+    prereq:"ENGL-C1000", satisfies:["as","uc7"],
+    desc:"Students critically read diverse literary texts to compose inquiry-driven writing. Minimum 7,500 words of assessed writing." },
+  { code:"RCCD GE 6", title:"Ethnic Studies",               units:3, sem:"w1", cat:"ge",
+    prereq:"None", satisfies:["as"],
+    desc:"Ethnic Studies GE requirement. Select an approved Ethnic Studies course from the RCCD GE Area 6 list." },
+
+  // ── Spring Year 1 ──────────────────────────────────────────────────────
+  { code:"CHE-1B",  title:"General Chemistry II",         units:5, sem:"sp1", cat:"core",
+    prereq:"CHE-1A", satisfies:["tag","as","pathways"],
+    desc:"Continued principles of chemistry: kinetics, thermodynamics, acid-base theory, equilibrium, and electrochemistry. Includes descriptive inorganic, nuclear, and introductory organic chemistry." },
+  { code:"MAT-1B",  title:"Calculus II",                  units:4, sem:"sp1", cat:"core",
+    prereq:"MAT-1A", satisfies:["tag","as","pathways"],
+    desc:"Techniques of integration, applications of integration, improper integrals, parametric equations, polar coordinates, infinite sequences and series." },
+  { code:"PHY-4A",  title:"Mechanics",                    units:4, sem:"sp1", cat:"core",
+    prereq:"None", satisfies:["tag","as","uc7","pathways"],
+    desc:"Examines vectors, particle kinematics and dynamics, work and power, conservation of energy and momentum, rotation, oscillations, and gravitation." },
+  { code:"PSYC-11", title:"Psychology of Human Sexuality", units:3, sem:"sp1", cat:"ge",
+    prereq:"None", satisfies:["as","uc7"],
+    desc:"Explores empirical findings and theories about human sexuality and intimate relationships from clinical, developmental, evolutionary, biological, and social psychology perspectives." },
+
+  // ── Summer Year 2 ──────────────────────────────────────────────────────
+  { code:"ENE-30",   title:"Computer Aided Drafting (CAD)", units:3, sem:"su2", cat:"core",
+    prereq:"None", satisfies:["tag","pathways"],
+    desc:"Two-dimensional computer aided drafting using AutoCAD. Students develop drawings typical to various fields of drafting and engineering." },
+  { code:"RCCD GE 3", title:"Arts & Humanities",            units:3, sem:"su2", cat:"ge",
+    prereq:"None", satisfies:["as"],
+    desc:"Arts & Humanities GE requirement. Select an approved course from the RCCD GE Area 3 list." },
+
+  // ── Fall Year 2 ────────────────────────────────────────────────────────
+  { code:"ENE-35",      title:"Statics",                            units:3, sem:"f2", cat:"core",
+    prereq:"PHY-4A (recommended)", satisfies:["tag","pathways"],
+    desc:"Study of force and equilibrium problems; free body diagram techniques, friction problems, second moments and moments of inertia, and their application to engineering." },
+  { code:"MAT-1C",      title:"Calculus III",                       units:4, sem:"f2", cat:"core",
+    prereq:"MAT-1A", satisfies:["tag","as","pathways"],
+    desc:"Vectors in a plane and in space, vector functions, calculus of multiple variables, partial derivatives, multiple integrals, line/surface integrals, Green's, Stokes', and Divergence theorems." },
+  { code:"MAT-70A/70B", title:"Data Science OR Stats for Engineers", units:4, sem:"f2", cat:"core",
+    prereq:"None", satisfies:["tag"],
+    desc:"MAT-70A: Programming and statistical concepts for data science, including data manipulation, visualization, and machine learning basics. OR MAT-70B: Descriptive and inferential statistics with programming for engineering applications." },
+  { code:"PHY-4B",      title:"Electricity and Magnetism",           units:4, sem:"f2", cat:"core",
+    prereq:"PHY-4A", satisfies:["tag","uc7","pathways"],
+    desc:"Study of electric fields, voltage, current, magnetic fields, electromagnetic induction, alternating currents, and electromagnetic waves." },
+
+  // ── Winter Year 2 ──────────────────────────────────────────────────────
+  { code:"MAT-2",    title:"Differential Equations",     units:4, sem:"w2", cat:"core",
+    prereq:"MAT-1B", satisfies:["tag","pathways"],
+    desc:"Quantitative and qualitative methods in differential equations. Linear first and second order DEs, series solutions, Laplace transforms, linear systems, and physical applications." },
+  { code:"RCCD GE 4", title:"Social & Behavioral Sciences", units:3, sem:"w2", cat:"ge",
+    prereq:"None", satisfies:["as"],
+    desc:"Social & Behavioral Sciences GE requirement. Select an approved course from the RCCD GE Area 4 list." },
+
+  // ── Spring Year 2 ──────────────────────────────────────────────────────
+  { code:"ENE-38/48", title:"Programming for Engineering OR MATLAB", units:4, sem:"sp2", cat:"core",
+    prereq:"None", satisfies:["tag","pathways"],
+    desc:"ENE-38: Software development basics using a high-level language and hardware interface. OR ENE-48: Using MATLAB to analyze and solve engineering problems; numerical analysis and data structures." },
+  { code:"ENE-39",    title:"Engineering Circuit Analysis",           units:4, sem:"sp2", cat:"core",
+    prereq:"None", satisfies:["tag","pathways"],
+    desc:"Introduction to electrical circuit analysis. Circuit laws, network theorems, DC/AC circuits with resistors, capacitors, inductors, op-amps. RLC circuits, phasors, AC power, and energy concepts." },
+  { code:"PHY-4C",    title:"Heat, Light and Waves",                  units:4, sem:"sp2", cat:"core",
+    prereq:"PHY-4A", satisfies:["tag","uc7","pathways"],
+    desc:"Fluid mechanics; thermodynamics; oscillations and waves; optics including reflection, refraction, lenses, interference, and diffraction; introduction to special relativity and modern physics." },
+  { code:"MAT-3",     title:"Linear Algebra",                         units:4, sem:"sp2", cat:"core",
+    prereq:"None", satisfies:["pathways"],
+    desc:"Vector space concepts, systems of linear equations, Gaussian elimination, Cramer's rule, determinants, linear independence, bases, linear transformations, eigenvalues, eigenvectors, and applications." },
+];
+
+/* ════════════════════════════════════════════════════════════
+   APP STATE & HELPERS
+   ════════════════════════════════════════════════════════════ */
+let selectedCode = null;
+let activeReq    = null;
+
+const isSpecial   = c => c.cat === "conditional" || c.cat === "optional";
+const semReqUnits = id => COURSES.filter(c => c.sem===id && !isSpecial(c)).reduce((s,c)=>s+c.units, 0);
+const reqUnits    = key => COURSES.filter(c => c.satisfies.includes(key)).reduce((s,c)=>s+c.units, 0);
+
+/* ════════════════════════════════════════════════════════════
+   RENDER
+   ════════════════════════════════════════════════════════════ */
+function render() {
+  const root = document.getElementById("root");
+  root.innerHTML = "";
+
+  // ── Program header ─────────────────────────────────────
+  root.insertAdjacentHTML("beforeend", `
+    <div class="page-header">
+      <div class="college-label">Norco College &middot; Pathway Map</div>
+      <h1 class="program-title">${PROGRAM.name}</h1>
+      <p class="program-degree">${PROGRAM.degree} &nbsp;&middot;&nbsp; ${PROGRAM.totalUnits} units</p>
+      <p class="program-desc">${PROGRAM.description}</p>
+      <div class="outcome-tags">
+        ${PROGRAM.outcomes.map(o=>`<span class="outcome-tag">${o}</span>`).join("")}
+      </div>
+    </div>`);
+
+  // ── Stats ──────────────────────────────────────────────
+  const statsEl = document.createElement("div");
+  statsEl.className = "stats";
+  statsEl.innerHTML = Object.entries(REQS).map(([k,r])=>`
+    <div class="stat-box">
+      <div class="stat-label"><span class="stat-dot" style="background:${r.dot}"></span>${r.label}</div>
+      <div class="stat-value">${reqUnits(k)}<span class="stat-sub"> units</span></div>
+    </div>`).join("");
+  root.appendChild(statsEl);
+
+  // ── Legend ─────────────────────────────────────────────
+  const legendEl = document.createElement("div");
+  legendEl.className = "legend";
+  legendEl.innerHTML = `
+    <div class="leg-item"><div class="leg-bar" style="background:#60a5fa"></div>Major / Engineering</div>
+    <div class="leg-item"><div class="leg-bar" style="background:#34d399"></div>General Education</div>
+    <div class="leg-item"><div class="leg-dash" style="border:1.5px dashed #f59e0b"></div>Conditional (test-out available)</div>
+    <div class="leg-item"><div class="leg-dash" style="border:1.5px dashed #d1d5db"></div>Optional</div>`;
+  root.appendChild(legendEl);
+
+  // ── Filters ────────────────────────────────────────────
+  const filterRow = document.createElement("div");
+  filterRow.className = "filter-row";
+  filterRow.innerHTML = `<span class="filter-label">Filter by requirement:</span>`;
+  Object.entries(REQS).forEach(([k,r]) => {
+    const btn = document.createElement("button");
+    btn.className = "chip" + (activeReq===k?" active":"");
+    btn.innerHTML = `<span class="cdot" style="background:${r.dot}"></span>${r.label}`;
+    btn.onclick = () => { activeReq = activeReq===k ? null : k; render(); };
+    filterRow.appendChild(btn);
+  });
+  if (activeReq) {
+    const clr = document.createElement("button");
+    clr.className = "chip clear-btn";
+    clr.textContent = "✕ Clear filter";
+    clr.onclick = () => { activeReq = null; render(); };
+    filterRow.appendChild(clr);
+  }
+  root.appendChild(filterRow);
+
+  // ── Year sections ──────────────────────────────────────
+  [1, 2].forEach(yr => {
+    const sec = document.createElement("div");
+    sec.className = "yr-sec";
+    sec.innerHTML = `<div class="yr-label">Year ${yr}</div>`;
+    const grid = document.createElement("div");
+    grid.className = "sem-grid";
+
+    SEMESTERS.filter(s => s.year===yr).forEach(sem => {
+      const semCourses = COURSES.filter(c => c.sem===sem.id);
+      const reqU  = semReqUnits(sem.id);
+      const hasOpt = semCourses.some(c => isSpecial(c));
+
+      const col = document.createElement("div");
+      col.className = "sem-col";
+      col.innerHTML = `
+        <div class="sem-hd">
+          <span class="sem-hd-name">${sem.label}</span>
+          <span class="sem-hd-units">${reqU>0 ? reqU+"u" : ""}${hasOpt&&reqU>0?" +opt":hasOpt?"optional":""}</span>
+        </div>`;
+      const body = document.createElement("div");
+      body.className = "sem-body";
+
+      semCourses.forEach(course => {
+        const special = isSpecial(course);
+        const dimmed  = activeReq && !special && !course.satisfies.includes(activeReq);
+        const sel     = selectedCode === course.code;
+
+        const card = document.createElement("div");
+        let cls = "card ";
+        if      (course.cat==="conditional") cls += "conditional";
+        else if (course.cat==="optional")    cls += "optional-card";
+        else                                  cls += "required " + course.cat;
+        if (sel)    cls += " selected";
+        if (dimmed) cls += " dimmed";
+        card.className = cls;
+
+        let pill = "";
+        if (course.cat==="conditional") pill = `<div class="special-pill pill-cond">⚗ Test-out available</div>`;
+        if (course.cat==="optional")    pill = `<div class="special-pill pill-opt">★ Optional</div>`;
+
+        card.innerHTML = `
+          <div class="c-code">${course.code}</div>
+          <div class="c-title">${course.title}</div>
+          ${pill}
+          <div class="c-bottom">
+            <span class="c-units">${course.units}u</span>
+            <div class="c-dots">${course.satisfies.map(r=>`<div class="c-dot" style="background:${REQS[r].dot}" title="${REQS[r].label}"></div>`).join("")}</div>
+          </div>`;
+        card.onclick = () => { selectedCode = selectedCode===course.code ? null : course.code; render(); };
+        body.appendChild(card);
+      });
+
+      col.appendChild(body);
+      grid.appendChild(col);
+    });
+
+    sec.appendChild(grid);
+    root.appendChild(sec);
+  });
+
+  // ── Detail panel ───────────────────────────────────────
+  if (selectedCode) {
+    const c   = COURSES.find(x => x.code===selectedCode);
+    const sem = SEMESTERS.find(s => s.id===c.sem);
+    const isC = c.cat==="conditional";
+    const isO = c.cat==="optional";
+
+    const badges = c.satisfies.length
+      ? c.satisfies.map(k=>{const r=REQS[k];return `<span class="req-badge" style="background:${r.bg};color:${r.text};border-color:${r.border}">${r.label}</span>`;}).join("")
+      : `<span style="font-size:12px;color:#9ca3af">No formal requirement — see note below</span>`;
+
+    let callout = "";
+    if (isC) callout = `<div class="callout callout-amber"><strong>⚗ Chemistry Placement Diagnostic Exam</strong>Students who pass the Chemistry Diagnostics Exam may skip CHE-2A and enroll directly in CHE-1A in the Fall. Students who do not pass the diagnostic can complete CHE-2A during Summer Year 1 to stay on track.</div>`;
+    if (isO) callout = `<div class="callout callout-gray"><strong>★ Optional Course</strong>${c.note}</div>`;
+
+    const panel = document.createElement("div");
+    panel.className = "detail-panel";
+    panel.innerHTML = `
+      <button class="detail-close" id="dp-close" aria-label="Close">✕</button>
+      <div class="detail-meta">${c.code} &nbsp;&middot;&nbsp; ${sem.label}, Year ${sem.year}</div>
+      <h2 class="detail-title">${c.title}</h2>
+      <p class="detail-desc">${c.desc}</p>
+      <div class="detail-grid">
+        <div class="detail-field"><label>Units</label><p class="big">${c.units}</p></div>
+        <div class="detail-field"><label>Prerequisite</label><p>${c.prereq||"None"}</p></div>
+        <div class="detail-field"><label>Type</label><p>${isC?"Conditional":isO?"Optional":c.cat==="core"?"Major / Engineering":"General Education"}</p></div>
+      </div>
+      <p class="satisfies-label">Satisfies</p>
+      <div class="satisfies-badges">${badges}</div>
+      ${callout}`;
+
+    root.appendChild(panel);
+    document.getElementById("dp-close").onclick = () => { selectedCode=null; render(); };
+  }
+
+  // ── Dot key footer ─────────────────────────────────────
+  const dk = document.createElement("div");
+  dk.className = "dot-key";
+  dk.innerHTML = `<span class="dot-key-label">Colored dots =</span>` +
+    Object.values(REQS).map(r=>`<span class="dot-key-item"><span class="dot-key-dot" style="background:${r.dot}"></span>${r.label}</span>`).join("");
+  root.appendChild(dk);
+}
+
+render();
+</script>
+</body>
+</html>
